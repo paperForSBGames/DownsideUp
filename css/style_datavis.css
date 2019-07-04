@@ -1,0 +1,50 @@
+* {
+    box-sizing: border-box;
+}
+
+section {
+    text-align: justify;
+    width: 65vw;
+    margin: 0 auto;
+}
+
+h1,
+h3 {
+    text-align: center;
+}
+
+video,
+img {
+    display: block;
+    width: 85%;
+    margin: 3% auto;
+}
+
+.quest-container {
+    display: grid;
+    grid-template-columns: 50% 50%;
+    grid-template-rows: 1fr auto;
+}
+
+.quest-description {
+    grid-column: 1 / span 2;
+}
+
+.datavis-container {
+    display: grid;
+    grid-template-columns: 100%;
+    grid-template-rows: 1fr auto;
+}
+
+@media only screen and (max-width: 600px) {
+    .quest-container {
+        display: grid;
+        grid-template-columns: 100%;
+        grid-template-rows: 1fr 1fr auto;
+    }
+    .quest-description {
+        grid-column: 1;
+    }
+}
+
+s

@@ -1,0 +1,184 @@
+---
+title: "Statistical Analysis of Test 2"
+output: 
+  html_document:
+    toc: yes
+    df_print: paged
+  html_notebook: default
+---
+
+This file documents the statistical analysis of Test 2's data. 
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+# run install.packages("tidyverse") if you haven't tidyverse installed
+# run install.packages("pastecs") if you haven't pastecs installed
+# run install.packages("Hmisc") if you haven't pastecs installed
+library(tidyverse)
+library(pastecs)
+library(Hmisc)
+```
+
+## Reading data
+
+```{r read}
+data <- read_csv(file="test2_form_responses.csv")
+```
+
+## Separating data into groups
+
+```{r groups}
+v2 <- filter(data, Versão =="v2")
+v2GEQ <- filter(v2, Questionário =="GEQ")
+v2PANAS <- filter(v2, Questionário =="PANAS")
+
+v3 <- filter(data, Versão =="v3")
+v3GEQ <- filter(v3, Questionário =="GEQ")
+v3PANAS <- filter(v3, Questionário =="PANAS")
+```
+
+## Descriptive Statistics
+Running descriptive statistics to see if our variables are normally distributed.
+GEQ responses for v2:
+```{r v2GEQstats}
+by(data = v2GEQ$Escore, v2GEQ$TipoVariavel, stat.desc, basic=FALSE, norm=TRUE)
+```
+
+PANAS responses for v2:
+```{r v2PANASstats}
+by(data = v2PANAS$Escore, v2PANAS$TipoVariavel, stat.desc, basic=FALSE, norm=TRUE)
+```
+
+GEQ responses for v3:
+```{r v3GEQstats}
+by(data = v3GEQ$Escore, v3GEQ$TipoVariavel, stat.desc, basic=FALSE, norm=TRUE)
+```
+
+PANAS responses for v3:
+```{r v3PANASstats}
+by(data = v3PANAS$Escore, v3PANAS$TipoVariavel, stat.desc, basic=FALSE, norm=TRUE)
+```
+
+We can see that the distributions are not normal, but we will perform Shapiro-Wilk separately.
+
+## Normality tests
+
+GEQ responses for v2:
+```{r v2GEQshapiro}
+by(data = v2GEQ$Escore, v2GEQ$TipoVariavel, shapiro.test)
+```
+
+PANAS responses for v2:
+```{r v2PANASshapiro}
+by(data = v2PANAS$Escore, v2PANAS$TipoVariavel, shapiro.test)
+```
+
+GEQ responses for v3:
+```{r v3GEQshapiro}
+by(data = v3GEQ$Escore, v3GEQ$TipoVariavel, shapiro.test)
+```
+
+PANAS responses for v3:
+```{r v3PANASshapiro}
+by(data = v3PANAS$Escore, v3PANAS$TipoVariavel, shapiro.test)
+```
+
+## Non-parametric test: Wilcoxon rank-sum test
+We now know that we need to perform a non-parametric test. As we are comparing two independent conditions (the game versions were evaluated by different participants), we will perform the Wilcoxon rank-sum test.
+
+First we separate each version into the specific scores we want to compare for each questionnaire type: 
+
+* GEQ: Positive Affect, Negative Affect, Positive Experience and Negative Experience
+* PANAS: Positive Affect and Negative Affect
+
+```{r subgroups}
+# v2 subgroups
+v2GEQPA <- filter(v2GEQ, TipoVariavel == "Positive Affect")
+v2GEQNA <- filter(v2GEQ, TipoVariavel == "Negative Affect")
+v2GEQPE <- filter(v2GEQ, TipoVariavel == "Positive Experience")
+v2GEQNE <- filter(v2GEQ, TipoVariavel == "Negative Experience")
+v2PANASPA <- filter(v2PANAS, TipoVariavel == "Positive Affect")
+v2PANASNA <- filter(v2PANAS, TipoVariavel == "Negative Affect")
+
+# v3 subgroups
+v3GEQPA <- filter(v3GEQ, TipoVariavel == "Positive Affect")
+v3GEQNA <- filter(v3GEQ, TipoVariavel == "Negative Affect")
+v3GEQPE <- filter(v3GEQ, TipoVariavel == "Positive Experience")
+v3GEQNE <- filter(v3GEQ, TipoVariavel == "Negative Experience")
+v3PANASPA <- filter(v3PANAS, TipoVariavel == "Positive Affect")
+v3PANASNA <- filter(v3PANAS, TipoVariavel == "Negative Affect")
+```
+
+To calculate the effect size of our test statistic
+
+```{r rfromwilcox}
+rFromWilcox<-function(wilcoxModel, N){
+ z <- qnorm(wilcoxModel$p.value/2)
+ r <- z/ sqrt(N)
+ cat(wilcoxModel$data.name, "Effect Size, r = ", r)
+}
+```
+We will perform 6 tests.
+
+### GEQ
+
+#### Positive Aspect
+```{r wilcoxon_geq_pa}
+geqpaModel <- wilcox.test(v2GEQPA$Escore, v3GEQPA$Escore, paired = FALSE)
+geqpaModel
+rFromWilcox(geqpaModel, 225)
+```
+
+#### Negative Aspect
+```{r wilcoxon_geq_na}
+geqnaModel <- wilcox.test(v2GEQNA$Escore, v3GEQNA$Escore, paired = FALSE)
+geqnaModel
+rFromWilcox(geqnaModel, 180)
+```
+
+#### Positive Experience
+```{r wilcoxon_geq_pe}
+geqpeModel <- wilcox.test(v2GEQPE$Escore, v3GEQPE$Escore, paired = FALSE)
+geqpeModel
+rFromWilcox(geqpeModel, 270)
+```
+
+#### Negative Experience
+```{r wilcoxon_geq_ne}
+geqneModel <- wilcox.test(v2GEQNE$Escore, v3GEQNE$Escore, paired = FALSE)
+geqneModel
+rFromWilcox(geqnaModel, 270)
+```
+
+### PANAS
+
+#### Positive Aspect
+```{r wilcoxon_panas_pa}
+panaspaModel <- wilcox.test(v2PANASPA$Escore, v3PANASPA$Escore, paired = FALSE)
+panaspaModel
+rFromWilcox(panaspaModel, 450)
+```
+
+#### Negative Aspect
+```{r wilcoxon_panas_na}
+panasnaModel <- wilcox.test(v2PANASNA$Escore, v3PANASNA$Escore, paired = FALSE)
+panasnaModel
+rFromWilcox(panasnaModel, 450)
+```
+
+## Plots
+
+```{r plot}
+GEQ <- filter(data, Questionário =="GEQ")
+PANAS <- filter(data, Questionário =="PANAS")
+barg <- ggplot(GEQ, aes(TipoVariavel, Escore, fill = Versão))
+barg + stat_summary(fun.y = mean, geom = "bar", position="dodge") + stat_summary(fun.data = mean_cl_normal, geom = "errorbar", position= position_dodge(width = 0.90), width = 0.2)+labs( x = "Responses' Aspects", y = "Mean Score", fill = "Version", title = "Responses for the GEQ Core and Post-Game modules (Test 2)")
+
+barp <- ggplot(PANAS, aes(TipoVariavel, Escore, fill = Versão))
+barp + stat_summary(fun.y = mean, geom = "bar", position="dodge", aes(width=0.5)) + stat_summary(fun.data = mean_cl_normal, geom = "errorbar", position= position_dodge(width = 0.5), width = 0.1)+labs( x = "Responses' Aspects", y = "Mean Score", fill = "Version", title = "Responses for the PANAS questionnaire (Test 2)")
+
+```

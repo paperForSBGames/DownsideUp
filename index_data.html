@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Downside Up</title>
+    <meta http-equiv="Content-Type" content="text/html;" charset="UTF-8" />
+
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" href="css/materialize.min.css" media="screen,projection" />
+    <link rel="stylesheet" href="css/style_datavis.css">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+</head>
+
+<body>
+    <section id="startSection">
+        <h1>Game Data</h1>
+        <p>
+            Here we present some of the data used to generate versions v2 and v3 during Phase 2.
+        </p>
+        <p>
+            If you're looking for results for the GEQ and Panas (Phase 3), please <a href="DataVis/Test2Analysis.html">click here</a>.
+        </p>
+    </section>
+
+    <section id="summary">
+        <h3>Summary</h3>
+        <p>
+            <a href="#questionaire">1. Questionnaire </a>
+        </p>
+        <p>
+            <a href="#replay">2. Replays </a>
+        </p>
+        <p>
+            <a href="#aggregated">3. Aggregated Visualization </a>
+        </p>
+    </section>
+
+    <section id="questionaire">
+        <h3>1. Questionnaire</h3>
+
+        <div class="quest-container">
+            <div>
+                <img src="DataVis/Resp1.png">
+            </div>
+            <div>
+                <img src="DataVis/Resp2.png">
+            </div>
+            <div class="quest-description">
+                <p>
+                    We fragmented each level into smaller challenges, totaling 18 challenges. Participants responded in a 5 item Likert scale how difficult was each challenge, ranging from 1 (``too easy'') to 5 (``too hard''). We compare the results from the Likert scales
+                    with the designers' expectations.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section id="replay">
+        <h3>2. Replays</h3>
+
+        <div class="quest-container">
+            <div>
+                <video controls>
+                            <source src="DataVis/jumping.mp4" type="video/mp4">
+                            Your browser does not support HTML5 video.
+                          </video>
+            </div>
+
+            <div>
+                <video controls>
+                                <source src="DataVis/platform.mp4" type="video/mp4">
+                                Your browser does not support HTML5 video.
+                              </video>
+            </div>
+
+            <div class="quest-description">
+                <p>
+                    By syncing timestamps, we can see replays of gameplay sessions and change colors of portions of the screen according to where players were looking at the time. The colored portion represents to which portion a player <b>is looking to</b>.
+                    The black one represents the portion a player <b> was not looking to</b>. This visualization, however, is only suitable for specific segments of gameplay. Some full replays might last hours, therefore requiring an unreasonably long
+                    time to watch.
+                </p>
+            </div>
+        </div>
+    </section>
+    <section id="aggregated">
+        <h3>3. Aggregated Visualization</h3>
+
+        <div class="datavis-container">
+            <div>
+                <img src="DataVis/datavis_paper.png">
+            </div>
+
+            <div>
+                <p>
+                    To better understand overall behavior, we developed a visualization that aggregated for all users every variable relevant for this research:
+                </p>
+
+                <ul>
+                    <li>- <b>White path</b>: ideal trajectory for each level</li>
+                    <li>- <b>Red paths with a low alpha value</b>: actual paths performed by the participants</li>
+                    <li>- <b>Black crosses</b>: location of players' deaths (if a cross appear in the lower screen, for example, a player died in that place while looking down)</li>
+                    <li>- <b>Mirrored bar charts</b>: distribution of gaze per challenge</li>
+                    <li>- <b>Black solid line in the bars</b>: expected gaze distribution</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!--JavaScript at end of body for optimized loading-->
+    <script type="text/javascript" src="js/materialize.min.js"></script>
+
+</body>
+
+</html>

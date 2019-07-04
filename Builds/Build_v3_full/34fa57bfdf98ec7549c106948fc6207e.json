@@ -1,0 +1,17 @@
+{
+"companyName": "Arthur",
+"productName": "Level 1 (v2)",
+"productVersion": "1.0",
+"dataUrl": "48a78129d18c104181d99f311be525a4.unityweb",
+"wasmCodeUrl": "7eb110f901384adb47cb2d19937a1539.unityweb",
+"wasmFrameworkUrl": "eb3b889102b4878582644a9f6626497b.unityweb",
+"wasmSymbolsUrl": "89cc505872a257fcfda57c43b422b59f.unityweb",
+"graphicsAPI": ["WebGL 2.0","WebGL 1.0"],
+"webglContextAttributes": {"preserveDrawingBuffer": false},
+"splashScreenStyle": "Dark",
+"backgroundColor": "#231F20",
+"cacheControl": {"default": "must-revalidate"},
+"developmentBuild": false,
+"multithreading": false,
+"unityVersion": "2019.1.4f1"
+}
